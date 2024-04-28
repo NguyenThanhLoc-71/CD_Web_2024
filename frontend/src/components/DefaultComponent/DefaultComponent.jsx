@@ -1,13 +1,13 @@
-import React from "react";
+import React from 'react'
 import HeaderComponent from '../HeaderComponent/HeaderComponent'
 
-const DefaultComponent = ({Children}) => {
-    return (
-        <div>
-            <HeaderComponent/>
-            {Children}
-        </div>
-    )
+const DefaultComponent = ({children}) => {
+  return (
+    <div>
+        <HeaderComponent />
+        {children}
+    </div>
+  )
 }
 
 export default DefaultComponent

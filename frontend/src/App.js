@@ -7,22 +7,21 @@ import DefaultComponent from './components/DefaultComponent/DefaultComponent'
 
 function App() {
   return (
-    <div>
+    <div style={{height: '100vh', width: '100%'}}>
       <Router>
         <Routes>
-          {routes.map((route) => {
-            const Page = route.page
-            const Layout = route.isShowHeader ? DefaultComponent : Fragment
-            return (
-              <Route key={route.path} path={route.path} element=
-                {
+        {routes.map((route) => {
+              const Page = route.page
+              const Layout = route.isShowHeader ? DefaultComponent : Fragment
+              return (
+                <Route key={route.path} path={route.path} element={
                   <Layout>
-                    <Page />
+                    <Page/>
                   </Layout>
                 } />
+              )
+            })}
 
-            )
-          })}
         </Routes>
       </Router>
     </div>
