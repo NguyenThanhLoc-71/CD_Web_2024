@@ -1,6 +1,6 @@
 import React from "react";
-import { Col } from 'antd'
-import { WrapperHeader, WrapperTextHeader, WrapperHearderAccount,WrapperTextHeaderSmall } from './style'
+import { Badge, Col } from 'antd'
+import { WrapperHeader, WrapperTextHeader, WrapperHearderAccount, WrapperTextHeaderSmall } from './style'
 import Search from "antd/es/transfer/search";
 import {
     UserOutlined, CaretDownOutlined, ShoppingCartOutlined,
@@ -22,10 +22,10 @@ const HeaderComponent = () => {
                         size="large"
                         bordered={false}
                         textButton="Tìm kiếm"
-                        placeholder="input search text"                      
+                        placeholder="input search text"
                     />
                 </Col>
-                <Col span={6} style={{display:'flex', gap:'20px', alignItems:'center'}}>
+                <Col span={6} style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
                     <WrapperHearderAccount>
                         <UserOutlined style={{ fontSize: '30px' }} />
                         <div>
@@ -37,12 +37,13 @@ const HeaderComponent = () => {
                         </div>
                     </WrapperHearderAccount>
                     <div>
-                    
-                            <ShoppingCartOutlined style={{ fontSize: '30px' ,color:'#fff'}}/>
-                            <WrapperTextHeaderSmall>
-                                Giỏ hàng
-                            </WrapperTextHeaderSmall>
-                       
+                        <Badge count={4} size="small">
+                            <ShoppingCartOutlined style={{ fontSize: '30px', color: '#fff' }} />
+                        </Badge>
+                        <WrapperTextHeaderSmall>
+                            Giỏ hàng
+                        </WrapperTextHeaderSmall>
+
                     </div>
                 </Col>
             </WrapperHeader>
