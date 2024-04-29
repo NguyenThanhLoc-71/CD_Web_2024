@@ -3,6 +3,7 @@ import React from "react";
 import { StyleNameProduct, WrapperCardStyle, WrapperDiscountText, WrapperPriceText, WrapperReportText } from "./style";
 import { StarFilled } from '@ant-design/icons';
 import logo from '../../assets/images/logo.png'
+import {WrapperStyleTextSell} from '../ProductDetailComponent/style'
 
 
 const CardComponent = () => {
@@ -26,7 +27,7 @@ const CardComponent = () => {
                     <span>4.9</span>
                     <StarFilled style={{ fontSize: '12px', color: 'yellow' }} />
                 </span>
-                <span>  | Đã bán 1000+</span>
+                <WrapperStyleTextSell>  | Đã bán 1000+</WrapperStyleTextSell>
             </WrapperReportText>
             <WrapperPriceText>
                 100.000đ
