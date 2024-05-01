@@ -19,7 +19,7 @@ export const routes = [
         isShowHeader:true 
     },
     {
-        path: '/products',
+        path: '/api/products',
         page: ProductsPage,
         isShowHeader:true 
     },
