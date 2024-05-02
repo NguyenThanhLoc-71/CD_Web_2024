@@ -1,4 +1,6 @@
 package com.example.backend.entity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 
@@ -11,6 +13,10 @@ public class Product {
 
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    @JsonBackReference // Quan hệ "con"
+    private Category category;
     private Double price;
 
     private int sold;
@@ -38,6 +44,14 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public Double getPrice() {

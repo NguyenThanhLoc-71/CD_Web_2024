@@ -1,3 +1,4 @@
+import NavBarComponent from "../components/NavbarComponent/NavbarComponent";
 import HomePage from "../pages/HomePage/HomePage";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 import OrderPage from "../pages/OrderPage/OrderPage";
@@ -19,12 +20,12 @@ export const routes = [
         isShowHeader:true 
     },
     {
-        path: '/api/products',
+        path: '/products',
         page: ProductsPage,
         isShowHeader:true 
     },
     {
-        path: '/type',
+        path: '/category/:categoryId',
         page: TypeProductPage,
         isShowHeader:true 
     },
@@ -39,7 +40,7 @@ export const routes = [
         isShowHeader:true 
     },
     {
-        path: '/product-detail',
+        path: '/product/:productId',
         page: ProductDetailPage,
         isShowHeader:true 
     },
