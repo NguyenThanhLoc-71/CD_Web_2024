@@ -1,9 +1,11 @@
 import React from "react";
+import { WrapperType } from '../TypeProduct/style';
+
 const TypeProduct = ({name}) => {
     return (
-        <div>
+        <WrapperType >
             {name}
-        </div>
+        </WrapperType>
     )
 }
 
