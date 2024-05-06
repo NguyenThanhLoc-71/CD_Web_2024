@@ -7,6 +7,8 @@ import ProductsPage from "../pages/ProductsPage/ProductsPage";
 import SignInPage from "../pages/SignInPage/SignInPage";
 import SignUnPage from "../pages/SignUpPage/SignUpPage";
 import TypeProductPage from "../pages/TypeProductPage/TypeProductPage";
+import RegisterPage from "../pages/RegisterPage/Register.js";
+import LoginPage from '../pages/LoginPage/Login.js'
 
 export const routes = [
     {
@@ -48,7 +50,16 @@ export const routes = [
         path: '*',
         page: NotFoundPage
     },
-    
+    {
+        path: '/login',
+        page: LoginPage,
+        isShowHeader:true
+    },
+    {
+        path: '/register',
+        page: RegisterPage,
+        isShowHeader:true
+    },
 
 
 ]
