@@ -1,11 +1,49 @@
-import React from "react";
+import React,{useState} from "react";
 import Header from "../../components/HeaderComponent/HeaderComponent";
 import "./login.css";
 import Footer from "../../components/FooterComponent/Footer";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
+
 
 import Login from "../../assets/images/logo_login.jpg";
 export default function LoginPage() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [loggedIn, setLoggedIn] = useState(false);
+
+    const navigate = useNavigate(); // Lấy đối tượng history
+
+
+    const handleLogin = async () => {
+        try {
+            const response = await fetch("/user/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    username: email,
+                    password: password,
+                }),
+            });
+            if (response.ok) {
+                // Đăng nhập thành công
+                console.log("Đăng nhập thành công");
+                // Chuyển hướng đến trang homeset
+                setLoggedIn(true);
+            } else {
+                // Đăng nhập thất bại
+                console.error("Đăng nhập thất bại");
+            }
+        } catch (error) {
+            console.error("Lỗi:", error);
+        }
+    };
+
+    if (loggedIn) {
+        return <link to={`/home`} />;
+    }
+
     return (
         <div>
 
@@ -27,7 +65,9 @@ export default function LoginPage() {
                                         class="form-control"
                                         id="email"
                                         placeholder="Email"
-                                        name="phone"
+                                        name="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
                                     />
                                 </div>
                                 <div class="mb-3 text-just">
@@ -39,7 +79,11 @@ export default function LoginPage() {
                                         class="form-control"
                                         id="pwd"
                                         placeholder="Nhập mật khẩu"
-                                        name="pswd"
+                                        name="password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+
+
                                     />
                                 </div>
                                 <div className="d-flex justify-content-between">
@@ -60,7 +104,7 @@ export default function LoginPage() {
                                     </div>
                                 </div>
                                 <div className="wrap-btn-login">
-                                    <button className="btn btn-primary btn-login">
+                                    <button className="btn btn-primary btn-login" onClick={handleLogin}>
                                         Đăng nhập
                                     </button>
                                 </div>
