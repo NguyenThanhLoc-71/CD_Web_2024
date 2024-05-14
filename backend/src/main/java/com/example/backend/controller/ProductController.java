@@ -16,10 +16,14 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @GetMapping // Xử lý yêu cầu GET để lấy danh sách sản phẩm
+    public List<Product> getAllProducts() {
+        return productService.getAllProducts();
+    }
+
     @GetMapping("/{productId}") // Xử lý yêu cầu GET với tham số động
     public Product getProductById(@PathVariable Long productId) {
         Optional<Product> product = productService.getProductById(productId);
-
         // Nếu không tìm thấy sản phẩm, trả về 404
         return product.orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + productId));
     }
