@@ -1,19 +1,62 @@
-import React from "react";
+import React, { useState ,useEffect} from "react";
 import Header from "../../components/HeaderComponent/HeaderComponent";
 import "./login.css";
 import Footer from "../../components/FooterComponent/Footer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Login from "../../assets/images/logo_login.jpg";
 export default function LoginPage() {
+
+    const [username, setUserName] = useState("");
+    const [password, setPassWord] = useState("");
+    const navigate = useNavigate();
+    // abc
+    useEffect(() => {
+        const storedUsername = localStorage.getItem("username");
+        if (storedUsername) {
+            setUserName(storedUsername);
+        }
+    }, []);
+
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch("/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password,
+                }),
+            });
+            if (response.ok) {
+                // Đăng nhập thành công
+                console.log("Đăng nhập thành công");
+                // Redirect hoặc thực hiện hành động sau khi đăng nhập thành công
+                const data = await response.json();
+                localStorage.setItem('token',data.jwt);
+                localStorage.setItem('username', username);
+
+                navigate("/");
+            } else {
+                // Đăng nhập thất bại
+                console.error("Đăng nhập thất bại");
+            }
+        } catch (error) {
+            console.error("Lỗi:", error);
+        }
+    };
+
     return (
         <div>
-
             <div className="container-fuid bg-gray">
                 <section className="container">
                     <div className="d-flex row">
                         <div className="block-left col-6">
-                            <img src={Login}></img>
+                            <img src={Login} alt="Login"></img>
                         </div>
                         <div className="block-right col-6">
                             <div className="bg-white w-80">
@@ -27,7 +70,9 @@ export default function LoginPage() {
                                         class="form-control"
                                         id="email"
                                         placeholder="Email"
-                                        name="phone"
+                                        name="email"
+                                        value={username}
+                                        onChange={(e) => setUserName(e.target.value)}
                                     />
                                 </div>
                                 <div class="mb-3 text-just">
@@ -39,7 +84,9 @@ export default function LoginPage() {
                                         class="form-control"
                                         id="pwd"
                                         placeholder="Nhập mật khẩu"
-                                        name="pswd"
+                                        name="password"
+                                        value={password}
+                                        onChange={(e) => setPassWord(e.target.value)}
                                     />
                                 </div>
                                 <div className="d-flex justify-content-between">
@@ -60,7 +107,7 @@ export default function LoginPage() {
                                     </div>
                                 </div>
                                 <div className="wrap-btn-login">
-                                    <button className="btn btn-primary btn-login">
+                                    <button className="btn btn-primary btn-login" onClick={handleLogin}>
                                         Đăng nhập
                                     </button>
                                 </div>
