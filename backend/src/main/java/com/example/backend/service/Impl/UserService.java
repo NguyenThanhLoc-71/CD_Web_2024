@@ -1,4 +1,4 @@
-package com.example.backend.service;
+package com.example.backend.service.Impl;
 
 import com.example.backend.entity.User;
 

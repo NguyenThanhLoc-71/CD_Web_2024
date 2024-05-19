@@ -3,6 +3,7 @@ package com.example.backend.service;
 import com.example.backend.entity.CustomUserDetails;
 import com.example.backend.entity.User;
 import com.example.backend.entity.UserRole;
+import com.example.backend.service.Impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;

@@ -3,6 +3,9 @@ package com.example.backend.controller;
 import com.example.backend.component.JwtUtil;
 import com.example.backend.dto.AuthenticationRequest;
 import com.example.backend.dto.AuthenticationResponse;
+import com.example.backend.dto.RegistrationRequest;
+import com.example.backend.entity.User;
+import com.example.backend.service.Impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,7 +31,8 @@ public class AuthenticationController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
@@ -47,9 +51,20 @@ public class AuthenticationController {
         }
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-        final String jwt = jwtUtil.generateToken(userDetails);
+        final User user = userService.findByUserName(authenticationRequest.getUsername());
+        final String jwt = jwtUtil.generateToken(userDetails, user.getId());
 
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody RegistrationRequest registrationRequest) {
+        if (userService.userExists(registrationRequest.getUsername())) {
+            return ResponseEntity.badRequest().body("Tài khoản đã tồn tại!");
+        }
+
+        userService.createUser(registrationRequest.getUsername(), registrationRequest.getPassword());
+        return ResponseEntity.ok("Tạo tài khoản thành công");
     }
 }
 

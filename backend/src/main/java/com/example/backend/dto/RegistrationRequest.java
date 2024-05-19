@@ -1,6 +1,6 @@
 package com.example.backend.dto;
 
-public class AuthenticationRequest {
+public class RegistrationRequest {
     private String username;
     private String password;
 
