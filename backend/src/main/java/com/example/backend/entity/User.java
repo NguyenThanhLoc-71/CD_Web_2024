@@ -13,6 +13,9 @@ public class User {
     private Long id;
     @Column(name = "username")
     private String userName;
+
+    @Column(name = "phoneNumber")
+    private String phoneNumber;
     @Column(name = "password")
     private String passWord;
     @Column(name = "enabled")
@@ -26,9 +29,10 @@ public class User {
 
     }
 
-    public User(Long id, String userName, String passWord, Boolean enabled, Set<UserRole> userRoles) {
+    public User(Long id, String userName, String phoneNumber, String passWord, Boolean enabled, Set<UserRole> userRoles) {
         this.id = id;
         this.userName = userName;
+        this.phoneNumber = phoneNumber;
         this.passWord = passWord;
         this.enabled = enabled;
         this.userRoles = userRoles;
@@ -73,4 +77,13 @@ public class User {
     public void setUserRoles(Set<UserRole> userRoles) {
         this.userRoles = userRoles;
     }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
 }

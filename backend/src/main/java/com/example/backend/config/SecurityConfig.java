@@ -34,12 +34,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .antMatchers("/").permitAll()
-                                .antMatchers("/login").permitAll()
-                                .antMatchers("/home").permitAll()
-                                .antMatchers("/api/products/{productId}").permitAll()
-                                .antMatchers("/api/categories/{categoryId}").permitAll()
-                                .anyRequest().authenticated()
+                                .antMatchers("/", "/login", "/register", "/home", "/api/products/{productId}", "/api/categories/{categoryId}")
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
