@@ -9,6 +9,7 @@ export default function LoginPage() {
 
     const [username, setUserName] = useState("");
     const [password, setPassWord] = useState("");
+    const [error, setError] = useState("");
     const navigate = useNavigate();
     
     useEffect(() => {
@@ -39,13 +40,14 @@ export default function LoginPage() {
                 const data = await response.json();
                 localStorage.setItem('token',data.jwt);
                 localStorage.setItem('username', username);
-                navigate("/");
+                window.location.href = "/"; // Force page reload
             } else {
                 // Đăng nhập thất bại
-                console.error("Đăng nhập thất bại");
+                setError("Đăng nhập sai tài khoản hoặc mật khẩu");
             }
         } catch (error) {
             console.error("Lỗi:", error);
+            setError("Đã xảy ra lỗi, vui lòng thử lại");
         }
     };
 
@@ -60,6 +62,11 @@ export default function LoginPage() {
                         <div className="block-right col-6">
                             <div className="bg-white w-80">
                                 <h1>Đăng nhập</h1>
+                                {error && (
+                                    <div className="alert alert-danger" role="alert">
+                                        {error}
+                                    </div>
+                                )}
                                 <div class="mb-3 mt-3 text-just">
                                     <label for="email" class="form-label">
                                         Nhập email:
