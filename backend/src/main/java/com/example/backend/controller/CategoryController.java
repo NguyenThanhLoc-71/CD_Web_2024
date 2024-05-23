@@ -1,7 +1,6 @@
 package com.example.backend.controller;
 
 import com.example.backend.entity.Category;
-import com.example.backend.entity.Product;
 import com.example.backend.service.CategoryService;
 import com.example.backend.service.ProductService;
 import org.springframework.http.ResponseEntity;

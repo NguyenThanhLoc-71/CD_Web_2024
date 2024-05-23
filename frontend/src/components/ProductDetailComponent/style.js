@@ -62,9 +62,9 @@ export const WrapperQualityProduct = styled.div`
     display: flex;
     gap: 4px;
     align-items: center;
-    width: 120px;
+    width: 80px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 8px;
 `
 
 export const WrapperInputNumber = styled(InputNumber)`

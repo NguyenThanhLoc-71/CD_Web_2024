@@ -7,13 +7,15 @@ import Footer from "../../components/FooterComponent/Footer";
 import { Link } from "react-router-dom";
 
 export default function Register() {
-    const [sex, setSex] = useState("male");
+
     const [checkPass, setCheckPass] = useState(true);
-    const [checkEmail, setCheckEmail] = useState(true);
+    const [checkUserName, setCheckUserName] = useState(true);
 
     const [repass, setRepass] = useState("");
     const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("");
+    const [username, setUserName] = useState("");
+    const [fullName, setFullName] = useState("");
+    const [phone, setPhone] = useState("");
 
     console.log("Pass:" + password);
     console.log("Repass:" + repass);
@@ -29,11 +31,46 @@ export default function Register() {
     useEffect(() => {
         // Kiểm tra định dạng email bằng regex
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        setCheckEmail(emailRegex.test(email)); // Kiểm tra email theo regex
-    }, [email]);
-    const radioChange = (event) => {
-        setSex(event.target.value);
+        setCheckUserName(emailRegex.test(username)); // Kiểm tra email theo regex
+    }, [username]);
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        if (!checkPass) {
+            alert("Vui lòng kiểm tra lại thông tin.");
+            return;
+        }
+
+        const user = {
+            fullName,
+            phone,
+            username,
+            password,
+        };
+
+        try {
+            const response = await fetch("http://localhost:8080/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(user),
+            });
+
+            if (response.ok) {
+                alert("Đăng ký thành công!");
+            } else {
+                alert("Đăng ký thất bại!");
+            }
+        } catch (error) {
+            console.error("Đăng ký thất bại:", error);
+            alert("Đăng ký thất bại!");
+        }
     };
+
+
+
     return (
         <div>
             <section>
@@ -64,7 +101,10 @@ export default function Register() {
                                                     name="fullName"
                                                     id="fullName"
                                                     placeholder="Họ và tên"
+                                                    value={fullName}
+                                                    onChange={(event) => setFullName(event.target.value)}
                                                     required
+                                                 
                                                 />
                                             </div>
                                             <div class="col-12">
@@ -77,13 +117,15 @@ export default function Register() {
                                                     name="phone"
                                                     id="phone"
                                                     placeholder="Ví dụ : 0399..."
+                                                    value={phone}
+                                                    onChange={(event) => setPhone(event.target.value)}
                                                     required
                                                 />
 
                                             </div>
                                             <div class="col-12">
                                                 <label for="email" class="form-label">
-                                                    Email <span class="text-danger">*</span>
+                                                    Tên đăng nhập <span class="text-danger">*</span>
                                                 </label>
                                                 <input
                                                     type="email"
@@ -91,79 +133,16 @@ export default function Register() {
                                                     name="email"
                                                     id="email"
                                                     placeholder="name@example.com"
-                                                    value={email}
-                                                    onChange={(event) => setEmail(event.target.value)}
+                                                    value={username}
+                                                    onChange={(event) => setUserName(event.target.value)}
                                                     required
                                                 />
 
-                                                {!checkEmail && (
+                                                {!checkUserName && (
                                                     <p className="text-danger">
-                                                        Email phải đúng định dạng
+                                                        Tên phải đúng định dạng
                                                     </p>
                                                 )}
-                                            </div>
-
-                                            <div class="col-12">
-                                                <label for="age" class="form-label">
-                                                    Tuổi: <span class="text-danger">*</span>
-                                                </label>
-                                                <input
-                                                    type="number"
-                                                    class="form-control"
-                                                    name="age"
-                                                    id="age"
-                                                    required
-                                                />
-                                            </div>
-
-                                            <div class="col-12">
-                                                <label for="email" class="form-label">
-                                                    Giới tính<span class="text-danger">*</span>
-                                                </label>
-                                                <div className="sex-check">
-                                                    <div class="form-check">
-                                                        <input
-                                                            type="radio"
-                                                            class="form-check-input"
-                                                            id="radio1"
-                                                            name="optradio"
-                                                            value="male"
-                                                            onChange={radioChange}
-                                                            checked={sex === "male"}
-                                                        />
-                                                        <label class="form-check-label" for="radio1">
-                                                            Nam
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input
-                                                            type="radio"
-                                                            class="form-check-input"
-                                                            id="radio2"
-                                                            name="optradio"
-                                                            value="female"
-                                                            onChange={radioChange}
-                                                            checked={sex === "female"}
-                                                        />
-                                                        <label class="form-check-label" for="radio2">
-                                                            Nữ
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input
-                                                            type="radio"
-                                                            class="form-check-input"
-                                                            id="radio3"
-                                                            name="optradio"
-                                                            value="other"
-                                                            onChange={radioChange}
-                                                            checked={sex === "other"}
-                                                        />
-                                                        <label class="form-check-label" for="radio3">
-                                                            Khác
-                                                        </label>
-                                                    </div>
-                                                </div>
                                             </div>
 
                                             <div class="col-12">
@@ -223,7 +202,7 @@ export default function Register() {
                       </div> */}
                                             <div class="col-12">
                                                 <div class="d-grid">
-                                                    <button class="btn btn-lg btn-primary" type="submit">
+                                                    <button class="btn btn-lg btn-primary" type="submit" onClick={handleSubmit}>
                                                         Đăng kí
                                                     </button>
                                                 </div>

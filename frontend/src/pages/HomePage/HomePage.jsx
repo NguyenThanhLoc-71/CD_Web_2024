@@ -12,19 +12,18 @@ import { Link } from "react-router-dom";
 
 
 const HomePage = () => {
-    const arr = ['Truyện tranh', 'Sách giáo khoa', 'Sách ngoại ngữ']
 
     const [categories, setCategories] = useState([]);
     const [products, setProduct] = useState([]);
 
     useEffect(() => {
-        fetch("/api/home") // Gửi yêu cầu tới endpoint trong Spring Boot
+        fetch("/home") // Gửi yêu cầu tới endpoint trong Spring Boot
             .then((response) => response.json()) // Chuyển đổi phản hồi thành JSON
             .then((data) => {
                 setProduct(data.products); // Cập nhật state với dữ liệu loại sản phẩm
                 setCategories(data.categories);
             })
-            .catch((error) => console.error("Có lỗi xảy ra:", error)); // Xử lý lỗi nếu có
+            .catch((error) => console.error("Có lỗi xảy ra:", error)); // Xử lý lỗi nếu có     
     }, []); // Chạy hiệu ứng chỉ một lần khi component được gắn vào
 
 
@@ -35,8 +34,8 @@ const HomePage = () => {
 
                     {categories && categories.length > 0 ? ( // Kiểm tra trước khi gọi map
                         categories.map((categories) => (
-                            <Link style={{textDecoration:'none', color:'black'}} key={categories.id} to={`/category/${categories.id}`}>
-                                <TypeProduct name={categories.name}/>
+                            <Link style={{ textDecoration: 'none', color: 'black' }} key={categories.id} to={`/category/${categories.id}`}>
+                                <TypeProduct name={categories.name} />
                             </Link>
 
                         ))

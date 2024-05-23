@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState,useEffect} from "react";
 import { Badge, Col } from 'antd'
 import { WrapperHeader, WrapperTextHeader, WrapperHearderAccount, WrapperTextHeaderSmall } from './style'
 import Search from "antd/es/transfer/search";
@@ -9,6 +9,15 @@ import ButtonInputSearch from "../ButtonInputSearch/ButtonInputSearch";
 
 
 const HeaderComponent = () => {
+    const [username, setUsername] = useState(null);
+
+    useEffect(() => {
+        const storedUsername = localStorage.getItem("username");
+        if (storedUsername) {
+            setUsername(storedUsername);
+        }
+    }, []);
+
     return (
         <div>
             <WrapperHeader>
@@ -29,7 +38,9 @@ const HeaderComponent = () => {
                     <WrapperHearderAccount>
                         <UserOutlined style={{ fontSize: '30px' }} />
                         <div>
-                            <WrapperTextHeaderSmall>Đăng nhập / Đăng ký</WrapperTextHeaderSmall>
+                            <WrapperTextHeaderSmall>
+                                {username ? `${username}`: "Đăng nhập / Đăng ký"}                          
+                                </WrapperTextHeaderSmall>
                             <div>
                                 <WrapperTextHeaderSmall>Tài khoản</WrapperTextHeaderSmall>
                                 <CaretDownOutlined />

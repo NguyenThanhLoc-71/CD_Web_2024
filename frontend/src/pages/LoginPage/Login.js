@@ -1,36 +1,45 @@
-import React,{useState} from "react";
+import React, { useState ,useEffect} from "react";
 import Header from "../../components/HeaderComponent/HeaderComponent";
 import "./login.css";
 import Footer from "../../components/FooterComponent/Footer";
-import { Link,useNavigate } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 
 import Login from "../../assets/images/logo_login.jpg";
 export default function LoginPage() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [loggedIn, setLoggedIn] = useState(false);
 
-    const navigate = useNavigate(); // Lấy đối tượng history
+    const [username, setUserName] = useState("");
+    const [password, setPassWord] = useState("");
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+        const storedUsername = localStorage.getItem("username");
+        if (storedUsername) {
+            setUserName(storedUsername);
+        }
+    }, []);
 
 
-    const handleLogin = async () => {
+    const handleLogin = async (e) => {
+        e.preventDefault();
         try {
-            const response = await fetch("/user/login", {
+            const response = await fetch("/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    username: email,
+                    username: username,
                     password: password,
                 }),
             });
             if (response.ok) {
                 // Đăng nhập thành công
                 console.log("Đăng nhập thành công");
-                // Chuyển hướng đến trang homeset
-                setLoggedIn(true);
+                // Redirect hoặc thực hiện hành động sau khi đăng nhập thành công
+                const data = await response.json();
+                localStorage.setItem('token',data.jwt);
+                localStorage.setItem('username', username);
+                navigate("/");
             } else {
                 // Đăng nhập thất bại
                 console.error("Đăng nhập thất bại");
@@ -40,18 +49,13 @@ export default function LoginPage() {
         }
     };
 
-    if (loggedIn) {
-        return <link to={`/home`} />;
-    }
-
     return (
         <div>
-
             <div className="container-fuid bg-gray">
                 <section className="container">
                     <div className="d-flex row">
                         <div className="block-left col-6">
-                            <img src={Login}></img>
+                            <img src={Login} alt="Login"></img>
                         </div>
                         <div className="block-right col-6">
                             <div className="bg-white w-80">
@@ -66,8 +70,8 @@ export default function LoginPage() {
                                         id="email"
                                         placeholder="Email"
                                         name="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        value={username}
+                                        onChange={(e) => setUserName(e.target.value)}
                                     />
                                 </div>
                                 <div class="mb-3 text-just">
@@ -81,9 +85,7 @@ export default function LoginPage() {
                                         placeholder="Nhập mật khẩu"
                                         name="password"
                                         value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-
-
+                                        onChange={(e) => setPassWord(e.target.value)}
                                     />
                                 </div>
                                 <div className="d-flex justify-content-between">
