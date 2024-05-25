@@ -26,4 +26,10 @@ public class ProductService {
     public List<Product> getProductsByCategory(Long categoryId) {
         return productRepository.findByCategory_Id(categoryId); // Truy vấn sản phẩm theo danh mục
     }
+
+    public List<Product> getProductsByPrice(Long categoryId, Double minPrice, Double maxPrice) {
+        // Thực hiện truy vấn CSDL để lấy danh sách sản phẩm theo giá
+        return productRepository.findByCategoryIdAndPriceBetween(categoryId, minPrice, maxPrice);
+    }
+
 }
