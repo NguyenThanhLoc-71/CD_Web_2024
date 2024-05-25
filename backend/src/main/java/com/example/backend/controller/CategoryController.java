@@ -1,11 +1,13 @@
 package com.example.backend.controller;
 
 import com.example.backend.entity.Category;
+import com.example.backend.entity.Product;
 import com.example.backend.service.CategoryService;
 import com.example.backend.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,4 +36,12 @@ public class CategoryController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/{categoryId}/byPrice")
+    public ResponseEntity<List<Product>> getProductsByPriceRange(
+            @PathVariable Long categoryId,
+            @RequestParam Double minPrice,
+            @RequestParam Double maxPrice) {
+        List<Product> products = productService.getProductsByPrice(categoryId, minPrice, maxPrice);
+        return ResponseEntity.ok(products);
+    }
 }

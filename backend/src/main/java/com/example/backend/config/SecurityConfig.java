@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .antMatchers("/", "/login", "/register", "/home", "/api/products/{productId}", "/api/categories/{categoryId}")
+                                .antMatchers("/", "/login", "/register", "/home", "/api/products/{productId}","/api/categories/**")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
