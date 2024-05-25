@@ -10,29 +10,49 @@ const TypeProductPage = () => {
 
     const { categoryId } = useParams(); // Lấy categoryId từ tham số URL
     const [products, setProducts] = useState([]); // State cho danh sách sản phẩm
+    const [initialProducts, setInitialProducts] = useState([]);
     const [categoryName, setCategoryName] = useState(""); // State cho tên danh mục
 
+    const updateProducts = (filteredProducts) => {
+        setProducts(filteredProducts);
+    };
 
     useEffect(() => {
-        fetch(`/api/categories/${categoryId}`) // Gửi yêu cầu HTTP
-            .then((response) => response.json())
-            .then((data) => {
-                setProducts(data.products); // Cập nhật danh sách sản phẩm
-                setCategoryName(data.categoryName); // Cập nhật tên danh mục
-            })
-            .catch((error) => console.error("Có lỗi xảy ra:", error)); // Xử lý lỗi
-    }, [categoryId]); // Chạy khi categoryId thay đổi
+        const fetchProducts = () => {
+            fetch(`/api/categories/${categoryId}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log("Fetched data:", data);
+                    if (data && Array.isArray(data.products)) {
+                        setProducts(data.products);
+                        setInitialProducts(data.products);
+                        setCategoryName(data.categoryName);
+                    } else {
+                        console.error("Invalid data format:", data);
+                        setProducts([]);
+                        setInitialProducts([]);
+                        setCategoryName("");
+                    }
+                })
+                .catch((error) => console.error("Có lỗi xảy ra:", error));
+        };
+
+        fetchProducts();
+    }, [categoryId]);
 
     const onPageChange = (page) => {
-        console.log("Page changed to:", page); // Xử lý sự kiện chuyển trang
+        console.log("Page changed to:", page);
+        // Implement pagination logic if needed
     };
+
+
 
     return (
         <div style={{ padding: '0 120px', background: '#efefef' }}>
             <h2>{`Danh mục: ${categoryName}`}</h2>
             <Row style={{ flexWrap: 'nowrap', paddingTop: '10px' }}>
                 <WrapperNavbar span={4}>
-                    {/* <NavBarComponent /> */}
+                <NavBarComponent updateProducts={updateProducts} />
                 </WrapperNavbar>
                 <Col span={20}>
                     <WrapperProducts>
