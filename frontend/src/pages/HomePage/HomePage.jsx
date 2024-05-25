@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TypeProduct from "../../components/TypeProduct/TypeProduct";
+import Footer from "../../components/FooterComponent/Footer";
 import { WrapperButtonMore, WrapperTypeProduct } from "./style";
 import slide1 from '../../assets/images/slide1.jpg'
 import slide2 from '../../assets/images/slide2.jpg'
@@ -15,6 +16,7 @@ const HomePage = () => {
 
     const [categories, setCategories] = useState([]);
     const [products, setProduct] = useState([]);
+    const [visibleProducts, setVisibleProducts] = useState(12);
 
     useEffect(() => {
         fetch("/home") // Gửi yêu cầu tới endpoint trong Spring Boot
@@ -26,12 +28,14 @@ const HomePage = () => {
             .catch((error) => console.error("Có lỗi xảy ra:", error)); // Xử lý lỗi nếu có     
     }, []); // Chạy hiệu ứng chỉ một lần khi component được gắn vào
 
+    const loadMoreProducts = () => {
+        setVisibleProducts((prevVisibleProducts) => prevVisibleProducts + 12);
+    };
 
     return (
         <>
             <div style={{ padding: '0 120px' }}>
                 <WrapperTypeProduct>
-
                     {categories && categories.length > 0 ? ( // Kiểm tra trước khi gọi map
                         categories.map((categories) => (
                             <Link style={{ textDecoration: 'none', color: 'black' }} key={categories.id} to={`/category/${categories.id}`}>
@@ -45,22 +49,27 @@ const HomePage = () => {
 
                 </WrapperTypeProduct>
             </div>
-            <div id="container" style={{ backgroundColor: '#efefef', padding: '0 120px', height: '1000px', width: '100%' }}>
+            <div id="container" style={{ backgroundColor: '#efefef', padding: '0 120px', height: 'auto', width: '100%' }}>
                 <SlideComponent arrImages={[slide1, slide2, slide3]} />
                 <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', gap: '30px', flexWrap: 'wrap' }}>
-
-                    {products.map((product) => (
-                        <CardComponent key={product.id} product={product} /> // Truyền sản phẩm qua props
+                    {products.slice(0, visibleProducts).map((product) => (
+                        <CardComponent key={product.id} product={product} />
                     ))}
-
                 </div>
-                <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-                    <WrapperButtonMore textButton="Xem thêm" type="outline" styleButton={{
-                        border: '1px solid rgb(11,116,229)', color: 'rgb(11,116,229)',
-                        width: '240px', height: '38px', borderRadius: '4px'
-                    }}
-                        styleTextButton={{ fontWeight: 500 }} />
-                </div>
+                {visibleProducts < products.length && (
+                    <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+                        <WrapperButtonMore
+                            textButton="Xem thêm"
+                            type="outline"
+                            styleButton={{
+                                border: '1px solid rgb(11,116,229)', color: 'rgb(11,116,229)',
+                                width: '240px', height: '38px', borderRadius: '4px'
+                            }}
+                            styleTextButton={{ fontWeight: 500 }}
+                            onClick={loadMoreProducts}
+                        />
+                    </div>
+                )}
             </div>
         </>
 

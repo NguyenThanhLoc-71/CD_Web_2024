@@ -12,9 +12,13 @@ const TypeProductPage = () => {
     const [products, setProducts] = useState([]); // State cho danh sách sản phẩm
     const [initialProducts, setInitialProducts] = useState([]);
     const [categoryName, setCategoryName] = useState(""); // State cho tên danh mục
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+
 
     const updateProducts = (filteredProducts) => {
         setProducts(filteredProducts);
+        setCurrentPage(1);
     };
 
     useEffect(() => {
@@ -40,24 +44,24 @@ const TypeProductPage = () => {
         fetchProducts();
     }, [categoryId]);
 
-    const onPageChange = (page) => {
-        console.log("Page changed to:", page);
-        // Implement pagination logic if needed
+    const onPageChange = (page, pageSize) => {
+        setCurrentPage(page);
+        setPageSize(pageSize);
     };
 
-
+    const currentProducts = products.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
     return (
         <div style={{ padding: '0 120px', background: '#efefef' }}>
             <h2>{`Danh mục: ${categoryName}`}</h2>
             <Row style={{ flexWrap: 'nowrap', paddingTop: '10px' }}>
                 <WrapperNavbar span={4}>
-                <NavBarComponent updateProducts={updateProducts} />
+                    <NavBarComponent updateProducts={updateProducts} />
                 </WrapperNavbar>
                 <Col span={20}>
                     <WrapperProducts>
-                        {products && products.length > 0 ? (
-                            products.map((product) => (
+                        {currentProducts && currentProducts.length > 0 ? (
+                            currentProducts.map((product) => (
                                 <CardComponent key={product.id} product={product} />
                             ))
                         ) : (
@@ -66,8 +70,9 @@ const TypeProductPage = () => {
 
                     </WrapperProducts>
                     <Pagination
-                        defaultCurrent={1}
-                        total={100}
+                        current={currentPage}
+                        pageSize={pageSize}
+                        total={products.length}
                         onChange={onPageChange}
                         style={{ textAlign: 'center', marginTop: '10px' }} />
                 </Col>
