@@ -9,7 +9,7 @@ import SignUnPage from "../pages/SignUpPage/SignUpPage";
 import TypeProductPage from "../pages/TypeProductPage/TypeProductPage";
 import RegisterPage from "../pages/RegisterPage/Register.js";
 import LoginPage from '../pages/LoginPage/Login.js'
-
+import AdminPage from "../pages/AdminPage/AdminPage.jsx";
 
 export const routes = [
     {
@@ -61,13 +61,12 @@ export const routes = [
         page: RegisterPage,
         isShowHeader:true
     }
-    // ,
-    // {
-    //     path: '/system/admin',
-    //     page: AdminPage,
-    //     isShowHeader: false,
-    //     isPrivated: true
-    // },
+    ,
+    {
+        path: '/admin',
+        page: AdminPage,
+        isShowHeader: false
+    },
 
 
 
