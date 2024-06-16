@@ -39,6 +39,8 @@ const CardComponent = ({ product }) => {
         });
     };
 
+    const imagePath = `/assets/images/${image}`;
+
     return (
         <Link style={{ textDecoration: 'none' }} to={`/product/${id}`}>
             <WrapperCardStyle
@@ -46,7 +48,7 @@ const CardComponent = ({ product }) => {
                 headStyle={{ width: '120px', height: '200px' }}
                 style={{ width: 240 }}
                 bodyStyle={{ padding: '10px' }}
-                cover={<img alt="product" src={image} />}
+                cover={<img alt="product" src={imagePath} />}
             >
                 <img
                     src={logo}
