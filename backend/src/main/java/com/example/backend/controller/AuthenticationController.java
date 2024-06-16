@@ -54,7 +54,9 @@ public class AuthenticationController {
         final User user = userService.findByUserName(authenticationRequest.getUsername());
         final String jwt = jwtUtil.generateToken(userDetails, user.getId());
 
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        boolean isAdmin = userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"));
+
+        return ResponseEntity.ok(new AuthenticationResponse(jwt, isAdmin));
     }
 
     @PostMapping("/register")
