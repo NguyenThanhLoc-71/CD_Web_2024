@@ -1,17 +1,18 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../../components/HeaderComponent/HeaderComponent";
 import "./login.css";
 import Footer from "../../components/FooterComponent/Footer";
 import { Link, useNavigate } from "react-router-dom";
 
 import Login from "../../assets/images/logo_login.jpg";
+
 export default function LoginPage() {
 
     const [username, setUserName] = useState("");
     const [password, setPassWord] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
-    
+
     useEffect(() => {
         const storedUsername = localStorage.getItem("username");
         if (storedUsername) {
@@ -38,9 +39,16 @@ export default function LoginPage() {
                 console.log("Đăng nhập thành công");
                 // Redirect hoặc thực hiện hành động sau khi đăng nhập thành công
                 const data = await response.json();
-                localStorage.setItem('token',data.jwt);
+                localStorage.setItem('token', data.jwt);
                 localStorage.setItem('username', username);
-                window.location.href = "/"; // Force page reload
+
+                if (data.admin) {
+                    navigate("/admin");
+                } else {
+                    navigate("/");
+                }
+
+
             } else {
                 // Đăng nhập thất bại
                 setError("Đăng nhập sai tài khoản hoặc mật khẩu");

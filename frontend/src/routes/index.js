@@ -9,8 +9,6 @@ import SignUnPage from "../pages/SignUpPage/SignUpPage";
 import TypeProductPage from "../pages/TypeProductPage/TypeProductPage";
 import RegisterPage from "../pages/RegisterPage/Register.js";
 import LoginPage from '../pages/LoginPage/Login.js'
-import CheckoutPage from "../pages/CheckoutPage/CheckoutPage";
-import SearchResults from "../components/SearchResults/SearchResults";
 
 
 export const routes = [
@@ -23,11 +21,6 @@ export const routes = [
         path: '/order',
         page: OrderPage,
         isShowHeader:true 
-    },
-    {
-        path: '/checkout',
-        page: CheckoutPage,
-        isShowHeader:true
     },
     {
         path: '/products',
@@ -61,10 +54,6 @@ export const routes = [
     {
         path: '/login',
         page: LoginPage,
-        isShowHeader:true
-    }, {
-        path: '/search-results',
-        page: SearchResults ,
         isShowHeader:true
     },
     {
