@@ -27,6 +27,10 @@ public class ProductController {
         // Nếu không tìm thấy sản phẩm, trả về 404
         return product.orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + productId));
     }
+    @GetMapping("/search")
+    public List<Product> searchProducts(@RequestParam String keyword) {
+        return productService.searchProducts(keyword);
+    }
 
 
 }

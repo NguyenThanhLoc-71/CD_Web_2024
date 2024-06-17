@@ -31,5 +31,7 @@ public class ProductService {
         // Thực hiện truy vấn CSDL để lấy danh sách sản phẩm theo giá
         return productRepository.findByCategoryIdAndPriceBetween(categoryId, minPrice, maxPrice);
     }
-
+    public List<Product> searchProducts(String keyword) {
+        return productRepository.findByNameContainingIgnoreCase(keyword);
+    }
 }
