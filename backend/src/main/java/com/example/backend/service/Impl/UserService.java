@@ -1,6 +1,11 @@
 package com.example.backend.service.Impl;
 
+import com.example.backend.dto.UserDTO;
+import com.example.backend.entity.Role;
 import com.example.backend.entity.User;
+
+import java.util.List;
+import java.util.Set;
 
 public interface UserService {
 
@@ -9,4 +14,8 @@ public interface UserService {
 
     // Thêm phương thức này
     boolean userExists(String username);
+
+    public List<UserDTO> getAllUsers();
+
+    Set<Role> getUserRoles(String username);
 }

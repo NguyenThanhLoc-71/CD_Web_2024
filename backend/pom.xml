@@ -80,12 +80,12 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.18.28</version> <!-- Phiên bản mới nhất tại thời điểm hiện tại -->
-			<scope>provided</scope>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.projectlombok</groupId>-->
+<!--			<artifactId>lombok</artifactId>-->
+<!--			<version>1.18.28</version> &lt;!&ndash; Phiên bản mới nhất tại thời điểm hiện tại &ndash;&gt;-->
+<!--			<scope>provided</scope>-->
+<!--		</dependency>-->
 
 
 		<dependency>

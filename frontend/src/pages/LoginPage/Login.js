@@ -41,7 +41,7 @@ export default function LoginPage() {
                 const data = await response.json();
                 localStorage.setItem('token', data.jwt);
                 localStorage.setItem('username', username);
-
+                localStorage.setItem('isAdmin',data.admin);
                 if (data.admin) {
                     navigate("/admin");
                 } else {

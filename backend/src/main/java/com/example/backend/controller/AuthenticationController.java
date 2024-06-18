@@ -4,17 +4,25 @@ import com.example.backend.component.JwtUtil;
 import com.example.backend.dto.AuthenticationRequest;
 import com.example.backend.dto.AuthenticationResponse;
 import com.example.backend.dto.RegistrationRequest;
+import com.example.backend.dto.UserDTO;
 import com.example.backend.entity.User;
 import com.example.backend.service.Impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 public class AuthenticationController {
@@ -34,7 +42,7 @@ public class AuthenticationController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @PostMapping(value = "/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 
         try {
@@ -68,5 +76,17 @@ public class AuthenticationController {
         userService.createUser(registrationRequest.getUsername(), registrationRequest.getPassword());
         return ResponseEntity.ok("Tạo tài khoản thành công");
     }
+
+    @GetMapping("/api/users")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
+
+
+
+
+
 }
 
