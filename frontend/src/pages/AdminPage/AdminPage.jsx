@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Table, Button, Layout, Menu, Space, Modal, Form, Input, Select, Upload } from "antd";
 import { UserOutlined, ShoppingCartOutlined, LaptopOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { Link } from "react-router-dom";
 import './AdminPage.css';
 
 const { Header, Sider, Content } = Layout;
@@ -9,15 +8,40 @@ const { Option } = Select;
 
 const AdminPage = () => {
     const [products, setProducts] = useState([]);
+    const [users, setUsers] = useState([]); 
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [form] = Form.useForm();
-
+    const [selectedMenuItem, setSelectedMenuItem] = useState('products');
+    
     useEffect(() => {
-        fetch("/api/products") // Update with your API endpoint
+        fetch("/api/products")
             .then((response) => response.json())
             .then((data) => setProducts(data))
             .catch((error) => console.error("Error fetching products:", error));
+        fetchUsers();
     }, []);
+
+    const fetchUsers = () => {
+        const token = localStorage.getItem('token');
+
+        fetch('/api/users', {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            setUsers(data);
+        })
+        .catch(error => {
+            console.error('Error fetching users:', error);
+        });
+    };
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -29,10 +53,10 @@ const AdminPage = () => {
                 form.resetFields();
                 const productData = {
                     name: values.name,
-                    categoryId: values.type, // Đổi type thành categoryId
+                    categoryId: values.type,
                     price: values.price,
                     sold: values.sold,
-                    image: values.image ? values.image[0].name : '', // Assuming single image upload
+                    image: values.image ? values.image[0].name : '',
                     rating: values.rating,
                     discount: values.discount,
                 };
@@ -46,7 +70,7 @@ const AdminPage = () => {
                 .then(response => response.json())
                 .then(data => {
                     console.log('Success:', data);
-                    setProducts([...products, data]); // Cập nhật danh sách sản phẩm
+                    setProducts([...products, data]);
                     setIsModalVisible(false);
                 })
                 .catch((error) => {
@@ -57,13 +81,60 @@ const AdminPage = () => {
                 console.log('Validate Failed:', info);
             });
     };
-    
 
     const handleCancel = () => {
         setIsModalVisible(false);
     };
 
-    const columns = [
+    const handleMenuClick = e => {
+        setSelectedMenuItem(e.key);
+    };
+
+    const userColumns = [
+        {
+            title: 'Gmail',
+            dataIndex: 'userName',
+            key: 'name',
+        },
+        {
+            title: 'Phone',
+            dataIndex: 'phoneNumber',
+            key: 'email',
+        },
+        {
+            title: 'Role',
+            dataIndex: 'roles',
+            key: 'email',
+        },
+        {
+            title: 'Address',
+            dataIndex: 'address',
+            key: 'address',
+        },
+        // {
+        //     title: 'Admin',
+        //     dataIndex: 'isAdmin',
+        //     key: 'isAdmin',
+        //     render: (text, record) => (record.isAdmin ? 'TRUE' : 'FALSE'),
+        // },
+        {
+            title: 'Phone',
+            dataIndex: 'phone',
+            key: 'phone',
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            render: (text, record) => (
+                <Space size="middle">
+                    <Button type="primary" icon={<EditOutlined />} />
+                    <Button type="danger" icon={<DeleteOutlined />} />
+                </Space>
+            ),
+        },
+    ];
+
+    const productColumns = [
         {
             title: 'Name',
             dataIndex: 'name',
@@ -85,14 +156,6 @@ const AdminPage = () => {
             key: 'type',
         },
         {
-            title: 'Image',
-            dataIndex: 'imageUrl',
-            key: 'imageUrl',
-            render: (text, record) => (
-                <img src={record.imageUrl} alt={record.name} style={{ width: '50px' }} />
-            ),
-        },
-        {
             title: 'Action',
             key: 'action',
             render: (text, record) => (
@@ -104,6 +167,27 @@ const AdminPage = () => {
         },
     ];
 
+    const renderContent = () => {
+        if (selectedMenuItem === 'users') {
+            return (
+                <div className="user-management">
+                    <Button type="primary" style={{ marginBottom: '16px' }}>Export Excel</Button>
+                    <Table dataSource={users} columns={userColumns} pagination={{ pageSize: 5 }} />
+                </div>
+            );
+        } else if (selectedMenuItem === 'products') {
+            return (
+                <div className="product-management">
+                    <Button type="primary" shape="circle" icon={<PlusOutlined />} onClick={showModal} />
+                    <Button type="primary" style={{ marginLeft: '10px' }}>Export Excel</Button>
+                    <Table dataSource={products} columns={productColumns} pagination={{ pageSize: 5 }} />
+                </div>
+            );
+        } else {
+            return <div>Đơn hàng sẽ được thêm sau</div>;
+        }
+    };
+
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Header className="header">
@@ -113,16 +197,18 @@ const AdminPage = () => {
                 <Sider width={200} className="site-layout-background">
                     <Menu
                         mode="inline"
-                        defaultSelectedKeys={['2']}
+                        defaultSelectedKeys={['products']}
+                        selectedKeys={[selectedMenuItem]}
+                        onClick={handleMenuClick}
                         style={{ height: '100%', borderRight: 0 }}
                     >
-                        <Menu.Item key="1" icon={<UserOutlined />}>
+                        <Menu.Item key="users" icon={<UserOutlined />}>
                             Người dùng
                         </Menu.Item>
-                        <Menu.Item key="2" icon={<LaptopOutlined />}>
+                        <Menu.Item key="products" icon={<LaptopOutlined />}>
                             Sản phẩm
                         </Menu.Item>
-                        <Menu.Item key="3" icon={<ShoppingCartOutlined />}>
+                        <Menu.Item key="orders" icon={<ShoppingCartOutlined />}>
                             Đơn hàng
                         </Menu.Item>
                     </Menu>
@@ -135,79 +221,72 @@ const AdminPage = () => {
                             minHeight: 280,
                         }}
                     >
-                        <div className="product-management">
-                            <div className="add-product">
-                                <Button type="primary" shape="circle" icon={<PlusOutlined />} onClick={showModal} />
-                                <Button type="primary" style={{ marginLeft: '10px' }}>Export Excel</Button>
-                            </div>
-                            <Table dataSource={products} columns={columns} pagination={{ pageSize: 5 }} />
-                        </div>
+                        {renderContent()}
                     </Content>
                 </Layout>
             </Layout>
 
             <Modal title="Tạo sản phẩm" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-    <Form form={form} layout="vertical" name="form_in_modal">
-        <Form.Item
-            name="name"
-            label="Name"
-            rules={[{ required: true, message: 'Please input the name of the product!' }]}
-        >
-            <Input />
-        </Form.Item>
-        <Form.Item
-            name="type"
-            label="Type"
-            rules={[{ required: true, message: 'Please select the type of the product!' }]}
-        >
-            <Select placeholder="Select a type">
-                <Option value="1">Category 1</Option>
-                <Option value="2">Category 2</Option>
-                <Option value="3">Category 3</Option>
-            </Select>
-        </Form.Item>
-        <Form.Item
-            name="price"
-            label="Price"
-            rules={[{ required: true, message: 'Please input the price of the product!' }]}
-        >
-            <Input type="number" />
-        </Form.Item>
-        <Form.Item
-            name="sold"
-            label="Sold"
-            rules={[{ required: true, message: 'Please input the sold count!' }]}
-        >
-            <Input type="number" />
-        </Form.Item>
-        <Form.Item
-            name="image"
-            label="Image"
-            valuePropName="fileList"
-            getValueFromEvent={e => Array.isArray(e) ? e : e && e.fileList}
-            rules={[{ required: true, message: 'Please select an image!' }]}
-        >
-            <Upload name="image" listType="picture" beforeUpload={() => false}>
-                <Button>Select File</Button>
-            </Upload>
-        </Form.Item>
-        <Form.Item
-            name="rating"
-            label="Rating"
-            rules={[{ required: true, message: 'Please input the rating of the product!' }]}
-        >
-            <Input type="number" />
-        </Form.Item>
-        <Form.Item
-            name="discount"
-            label="Discount"
-            rules={[{ required: true, message: 'Please input the discount of the product!' }]}
-        >
-            <Input type="number" />
-        </Form.Item>
-    </Form>
-</Modal>
-
+                <Form form={form} layout="vertical" name="form_in_modal">
+                    <Form.Item
+                        name="name"
+                        label="Name"
+                        rules={[{ required: true, message: 'Please input the name of the product!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        name="type"
+                        label="Type"
+                        rules={[{ required: true, message: 'Please select the type of the product!' }]}
+                    >
+                        <Select placeholder="Select a type">
+                            <Option value="1">Category 1</Option>
+                            <Option value="2">Category 2</Option>
+                            <Option value="3">Category 3</Option>
+                        </Select>
+                    </Form.Item>
+                    <Form.Item
+                        name="price"
+                        label="Price"
+                        rules={[{ required: true, message: 'Please input the price of the product!' }]}
+                    >
+                        <Input type="number" />
+                    </Form.Item>
+                    <Form.Item
+                        name="sold"
+                        label="Sold"
+                        rules={[{ required: true, message: 'Please input the sold count!' }]}
+                    >
+                        <Input type="number" />
+                    </Form.Item>
+                    <Form.Item
+                        name="image"
+                        label="Image"
+                        valuePropName="fileList"
+                        getValueFromEvent={e => Array.isArray(e) ? e : e && e.fileList}
+                        rules={[{ required: true, message: 'Please select an image!' }]}
+                    >
+                        <Upload name="image" listType="picture" beforeUpload={() => false}>
+                            <Button>Select File</Button>
+                        </Upload>
+                    </Form.Item>
+                    <Form.Item
+                        name="rating"
+                        label="Rating"
+                        rules={[{ required: true, message: 'Please input the rating of the product!' }]}
+                    >
+                        <Input type="number" />
+                    </Form.Item>
+                    <Form.Item
+                        name="discount"
+                        label="Discount"
+                        rules={[{ required: true, message: 'Please input the discount of the product!' }]}
+                    >
+                        <Input type="number" />
+                    </Form.Item>
+                </Form>
+            </Modal>
         </Layout>
     );
 };

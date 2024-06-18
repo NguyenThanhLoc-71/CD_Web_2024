@@ -1,8 +1,9 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.UserDTO;
 import com.example.backend.entity.CustomUserDetails;
+import com.example.backend.entity.Role;
 import com.example.backend.entity.User;
-import com.example.backend.entity.UserRole;
 import com.example.backend.service.Impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -35,9 +36,9 @@ public class CustomUserDetailService implements UserDetailsService {
         }
 
         Collection<GrantedAuthority> grantedAuthoritySet = new HashSet<>();
-        Set<UserRole> roles = user.getUserRoles();
-        for (UserRole userRole: roles) {
-            grantedAuthoritySet.add(new SimpleGrantedAuthority(userRole.getRole().getName()));
+        Set<Role> roles = userService.getUserRoles(username);
+        for (Role role : roles) {
+            grantedAuthoritySet.add(new SimpleGrantedAuthority(role.getName()));
         }
         return new CustomUserDetails(user, grantedAuthoritySet);
     }
