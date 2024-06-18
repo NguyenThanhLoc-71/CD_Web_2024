@@ -8,8 +8,10 @@ import SignInPage from "../pages/SignInPage/SignInPage";
 import SignUpPage from "../pages/SignUpPage/SignUpPage";
 import TypeProductPage from "../pages/TypeProductPage/TypeProductPage";
 import RegisterPage from "../pages/RegisterPage/Register.js";
+
 import LoginPage from '../pages/LoginPage/Login.js';
 import AdminPage from "../pages/AdminPage/AdminPage.jsx";
+
 
 export const routes = [
     {
@@ -55,6 +57,7 @@ export const routes = [
     {
         path: '/register',
         page: RegisterPage,
+
         isShowHeader: true
     },
     {
@@ -68,3 +71,8 @@ export const routes = [
         page: NotFoundPage
     },
 ];
+
+  
+
+
+

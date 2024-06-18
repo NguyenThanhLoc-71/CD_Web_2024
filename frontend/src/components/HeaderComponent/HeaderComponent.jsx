@@ -11,6 +11,7 @@ const HeaderComponent = () => {
     const [username, setUsername] = useState(null);
     const [isOpenPopup, setIsOpenPopup] = useState(false);
     const [cartCount, setCartCount] = useState(0);
+    const [keyword, setKeyword] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -44,6 +45,10 @@ const HeaderComponent = () => {
             default:
                 break;
         }
+    };
+    const handleSearch = (e) => {
+        e.preventDefault();
+        navigate(`/search-results?keyword=${keyword}`);
     };
 
     const menu = (
@@ -92,8 +97,11 @@ const HeaderComponent = () => {
                     <ButtonInputSearch
                         size="large"
                         bordered={false}
-                        textButton="Tìm kiếm"
+                        textButton="Tìm kiếm"
                         placeholder="input search text"
+                        onSearch={handleSearch}
+                        value={keyword}
+                        setValue={setKeyword}
                     />
                 </Col>
                 <Col span={6} style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
