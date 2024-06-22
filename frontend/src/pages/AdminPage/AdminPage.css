@@ -22,4 +22,8 @@
     align-items: center;
     margin-bottom: 20px;
   }
+
+  .user-management, .product-management {
+    padding: 24px;
+}
   

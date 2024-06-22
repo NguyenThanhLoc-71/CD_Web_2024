@@ -11,8 +11,54 @@ const AdminPage = () => {
     const [users, setUsers] = useState([]); 
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [form] = Form.useForm();
+    const [editForm] = Form.useForm();
     const [selectedMenuItem, setSelectedMenuItem] = useState('products');
-    
+    const [editingUser, setEditingUser] = useState(null);
+    const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+
+    const handleEditClick = user => {
+        setEditingUser(user);
+        editForm.setFieldsValue(user);
+        setIsEditModalVisible(true);
+    };
+
+    const handleDeleteClick = async (userId) => {
+        await fetch(`/delete/${userId}`, {
+            method: 'DELETE',
+        });
+        fetchUsers();
+    };
+
+    const handleEditOk = () => {
+        editForm.validateFields()
+            .then(values => {
+                editForm.resetFields();
+                fetch(`/update/${editingUser.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(values)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    setUsers(users.map(user => user.id === data.id ? data : user));
+                    setIsEditModalVisible(false);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            })
+            .catch(info => {
+                console.log('Validate Failed:', info);
+            });
+    };
+
+    const handleEditCancel = () => {
+        setIsEditModalVisible(false);
+    };
+
     useEffect(() => {
         fetch("/api/products")
             .then((response) => response.json())
@@ -117,18 +163,18 @@ const AdminPage = () => {
         //     key: 'isAdmin',
         //     render: (text, record) => (record.isAdmin ? 'TRUE' : 'FALSE'),
         // },
-        {
-            title: 'Phone',
-            dataIndex: 'phone',
-            key: 'phone',
-        },
+        // {
+        //     title: 'Phone',
+        //     dataIndex: 'phone',
+        //     key: 'phone',
+        // },
         {
             title: 'Action',
             key: 'action',
             render: (text, record) => (
                 <Space size="middle">
-                    <Button type="primary" icon={<EditOutlined />} />
-                    <Button type="danger" icon={<DeleteOutlined />} />
+                    <Button type="primary" icon={<EditOutlined />} onClick = {() => handleEditClick(record)} />
+                    <Button type="danger" icon={<DeleteOutlined />} onClick={() => handleDeleteClick(record.id)} />
                 </Space>
             ),
         },
@@ -287,6 +333,27 @@ const AdminPage = () => {
                     </Form.Item>
                 </Form>
             </Modal>
+
+            <Modal title="Cập nhật thông tin người dùng" visible={isEditModalVisible} onOk={handleEditOk} onCancel={handleEditCancel}>
+                <Form form={editForm} layout="vertical" name="form_in_modal">
+                    <Form.Item
+                        name="phoneNumber"
+                        label="phone"
+                        rules={[{ required: true, message: 'Please input the email of the user!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        name="address"
+                        label="Address"
+                        rules={[{ required: true, message: 'Please input the phone number of the user!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+            
+                </Form>
+            </Modal>
+
         </Layout>
     );
 };
