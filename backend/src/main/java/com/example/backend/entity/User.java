@@ -21,6 +21,9 @@ public class User {
     private String phoneNumber;
     @Column(name = "password")
     private String passWord;
+
+    @Column(name="address")
+    private String address;
     @Column(name = "enabled")
     private Boolean enabled;
     @JsonIgnore
@@ -41,13 +44,14 @@ public class User {
 
     }
 
-    public User(Long id, String userName, String phoneNumber, String passWord, Boolean enabled, Set<UserRole> userRoles) {
+    public User(Long id, String userName, String phoneNumber, String passWord, Boolean enabled, Set<UserRole> userRoles, String address) {
         this.id = id;
         this.userName = userName;
         this.phoneNumber = phoneNumber;
         this.passWord = passWord;
         this.enabled = enabled;
         this.userRoles = userRoles;
+        this.address = address;
     }
 
     public Long getId() {
@@ -98,4 +102,11 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }

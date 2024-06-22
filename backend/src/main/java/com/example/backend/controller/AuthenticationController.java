@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class AuthenticationController {
@@ -84,7 +85,30 @@ public class AuthenticationController {
         return ResponseEntity.ok(users);
     }
 
+    @PutMapping("/update/{id}")
+    public String updateUser(@PathVariable Long id, @RequestBody User userRequest) {
+        Optional<User> userOptional = userService.findById(id);
+        if (!userOptional.isPresent()) {
+            return "User not found";
+        }
+        User user = userOptional.get();
+        user.setPhoneNumber(userRequest.getPhoneNumber());
+        user.setAddress(userRequest.getAddress());
+        userService.saveUser(user);
 
+        return "User updated successfully";
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        Optional<User> userOptional = userService.findById(id);
+        if (!userOptional.isPresent()) {
+            return "User not found";
+        }
+
+        userService.deleteUser(id);
+        return "User deleted successfully";
+    }
 
 
 
