@@ -5,6 +5,7 @@ import com.example.backend.entity.Role;
 import com.example.backend.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface UserService {
@@ -18,4 +19,10 @@ public interface UserService {
     public List<UserDTO> getAllUsers();
 
     Set<Role> getUserRoles(String username);
+
+    Optional<User> findById(Long id);
+
+    User saveUser(User user);
+
+    void deleteUser(Long id);
 }
