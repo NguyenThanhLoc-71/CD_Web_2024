@@ -1,6 +1,7 @@
 package com.example.backend.component;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -34,7 +35,12 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+        try {
+            return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+        } catch (MalformedJwtException e) {
+            // Ghi log exception hoặc xử lý tùy theo nhu cầu ứng dụng
+            throw new MalformedJwtException("Token JWT không hợp lệ: " + e.getMessage());
+        }
     }
 
     private Boolean isTokenExpired(String token) {

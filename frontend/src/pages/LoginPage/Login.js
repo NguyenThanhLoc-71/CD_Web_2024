@@ -46,6 +46,7 @@ export default function LoginPage() {
                     navigate("/admin");
                 } else {
                     navigate("/");
+                    window.location.reload(); // Load lại trang
                 }
 
 
