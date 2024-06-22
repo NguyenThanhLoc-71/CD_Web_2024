@@ -13,6 +13,8 @@ import LoginPage from '../pages/LoginPage/Login.js';
 import AdminPage from "../pages/AdminPage/AdminPage.jsx";
 import CheckoutPage from "../pages/CheckoutPage/CheckoutPage";
 
+import ProfilePage from "../pages/UserProfilePage/ProfilePage";
+
 
 export const routes = [
     {
@@ -39,6 +41,11 @@ export const routes = [
         path: '/sign-in',
         page: SignInPage,
         isShowHeader: true 
+    },
+    {
+        path: '/profile',
+        page: ProfilePage,
+        isShowHeader: true
     },
     {
         path: '/checkout',

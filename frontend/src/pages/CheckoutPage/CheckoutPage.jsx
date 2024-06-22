@@ -14,6 +14,7 @@ const Checkout = () => {
     });
     const [error, setError] = useState(null);
     const [orderPlaced, setOrderPlaced] = useState(false); // State để kiểm soát việc hiển thị nội dung thành công
+    const [userId, setUserId] = useState(null); // Thêm state để lưu trữ user ID
 
     const navigate = useNavigate(); // Lấy hàm navigate từ react-router-dom
 
@@ -30,6 +31,9 @@ const Checkout = () => {
                 setCartItems(response.data);
                 const total = response.data.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
                 setTotalAmount(total);
+                // Lấy user ID từ token
+                const decodedToken = JSON.parse(atob(token.split('.')[1]));
+                setUserId(decodedToken.userId);
             } catch (error) {
                 console.error('Error fetching cart items:', error);
                 setError('Failed to fetch cart items.');
@@ -39,11 +43,14 @@ const Checkout = () => {
         fetchCartItems();
     }, []);
 
+
+
     const handlePayment = async () => {
         try {
             const orderItems = cartItems.map(item => ({
                 productId: item.product.id,
-                quantity: item.quantity
+                quantity: item.quantity,
+                userId // Sử dụng user ID ở đây
             }));
 
             const response = await axios.post('/api/payments/create', {
