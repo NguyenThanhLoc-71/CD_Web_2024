@@ -47,7 +47,6 @@ public class ProductService {
         product.setImage(productDTO.getImage());
         product.setRating(productDTO.getRating());
         product.setDiscount(productDTO.getDiscount());
-
         Category category = categoryRepository.findById(productDTO.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
         product.setCategory(category);
