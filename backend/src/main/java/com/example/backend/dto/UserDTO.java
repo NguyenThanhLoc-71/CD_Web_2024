@@ -11,16 +11,27 @@ public class UserDTO {
     private Boolean enabled;
     private Set<String> roles;
 
-    public UserDTO(Long id, String userName, String phoneNumber, Boolean enabled, Set<String> roles) {
+    private String address;
+
+    public UserDTO(Long id, String userName, String phoneNumber, Boolean enabled, Set<String> roles, String address) {
         this.id = id;
         this.userName = userName;
         this.phoneNumber = phoneNumber;
         this.enabled = enabled;
         this.roles = roles;
+        this.address = address;
     }
 
     // Getters and Setters
 
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public String getPassWord() {
         return passWord;
