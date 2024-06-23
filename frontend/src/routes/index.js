@@ -14,6 +14,7 @@ import AdminPage from "../pages/AdminPage/AdminPage.jsx";
 import CheckoutPage from "../pages/CheckoutPage/CheckoutPage";
 
 import ProfilePage from "../pages/UserProfilePage/ProfilePage";
+import SearchResults from "../components/SearchResults/SearchResults";
 
 
 export const routes = [
@@ -61,6 +62,11 @@ export const routes = [
         path: '/product/:productId',
         page: ProductDetailPage,
         isShowHeader: true 
+    },
+    {
+        path: 'search-results',
+        page: SearchResults,
+        isShowHeader: true
     },
     {
         path: '/login',

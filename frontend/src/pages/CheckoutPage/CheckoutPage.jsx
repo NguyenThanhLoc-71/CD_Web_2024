@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +14,6 @@ const Checkout = () => {
     const [error, setError] = useState(null);
     const [orderPlaced, setOrderPlaced] = useState(false); // State để kiểm soát việc hiển thị nội dung thành công
     const [userId, setUserId] = useState(null); // Thêm state để lưu trữ user ID
-
     const navigate = useNavigate(); // Lấy hàm navigate từ react-router-dom
 
     useEffect(() => {
@@ -31,6 +29,7 @@ const Checkout = () => {
                 setCartItems(response.data);
                 const total = response.data.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
                 setTotalAmount(total);
+
                 // Lấy user ID từ token
                 const decodedToken = JSON.parse(atob(token.split('.')[1]));
                 setUserId(decodedToken.userId);
@@ -43,21 +42,25 @@ const Checkout = () => {
         fetchCartItems();
     }, []);
 
-
-
     const handlePayment = async () => {
         try {
             const orderItems = cartItems.map(item => ({
                 productId: item.product.id,
                 quantity: item.quantity,
-                userId // Sử dụng user ID ở đây
+                userId: userId // Sử dụng user ID từ state
             }));
 
             const response = await axios.post('/api/payments/create', {
+                userId: userId, // Thêm userId vào body request
                 amount: totalAmount,
                 method: paymentMethod,
                 address,
                 orderItems,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json'
+                }
             });
 
             console.log('Payment created:', response.data);
@@ -85,7 +88,7 @@ const Checkout = () => {
         <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px', backgroundColor: '#f9f9f9', borderRadius: '8px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
             <h1 style={{ textAlign: 'center', color: '#333' }}>Checkout</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}
-            {!orderPlaced ? ( // Hiển thị nội dung checkout nếu chưa đặt hàng thành công
+            {!orderPlaced ? (
                 <>
                     <h2 style={{ textAlign: 'center', color: '#333' }}>Sản Phẩm</h2>
                     <ul style={{ listStyleType: 'none', padding: '0' }}>
@@ -114,11 +117,10 @@ const Checkout = () => {
                     </select>
                     <button onClick={handlePayment} style={{ width: '100%', padding: '10px', backgroundColor: '#28a745', color: '#fff', border: 'none', borderRadius: '4px', fontSize: '16px', cursor: 'pointer' }}>Đặt hàng</button>
                 </>
-            ) : ( // Hiển thị nội dung thành công sau khi đặt hàng
+            ) : (
                 <div style={{ textAlign: 'center', padding: '20px', backgroundColor: '#d4edda', color: '#155724', border: '1px solid #c3e6cb', borderRadius: '4px' }}>
                     <h2>Thanh toán thành công!</h2>
                     <p>Xin cảm ơn đã mua hàng của chúng tôi.</p>
-                    {/* Nội dung khác cho thông báo thành công có thể được thêm vào đây */}
                 </div>
             )}
         </div>
