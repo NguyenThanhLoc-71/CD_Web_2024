@@ -36,8 +36,8 @@ const HeaderComponent = () => {
             case "profile":
                 navigate("/profile");
                 break;
-            case "orders":
-                navigate("/orders");
+            case "orderInform":
+                navigate("/orderInfo");
                 break;
             case "logout":
                 handleLogout();
@@ -56,8 +56,8 @@ const HeaderComponent = () => {
             <Menu.Item key="profile">
                 Profile
             </Menu.Item>
-            <Menu.Item key="orders">
-                Orders
+            <Menu.Item key="orderInform">
+                OrderInform
             </Menu.Item>
             <Menu.Item key="logout">
                 Logout

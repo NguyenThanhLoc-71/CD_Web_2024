@@ -15,6 +15,7 @@ import CheckoutPage from "../pages/CheckoutPage/CheckoutPage";
 
 import ProfilePage from "../pages/UserProfilePage/ProfilePage";
 import SearchResults from "../components/SearchResults/SearchResults";
+import OrderInforPage from "../pages/OrderInforPage/OrderInforPage";
 
 
 export const routes = [
@@ -28,6 +29,11 @@ export const routes = [
         page: OrderPage,
         isShowHeader: true 
     },
+    {
+    path: '/orderInfo',
+    page: OrderInforPage,
+    isShowHeader: true
+},
     {
         path: '/products',
         page: ProductsPage,
