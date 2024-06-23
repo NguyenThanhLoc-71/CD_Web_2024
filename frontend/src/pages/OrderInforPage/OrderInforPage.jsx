@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Space } from 'antd';
 
-
 const OrderPage = () => {
     const [orders, setOrders] = useState([]);
+
+
 
     useEffect(() => {
         fetchOrders();
@@ -11,8 +12,10 @@ const OrderPage = () => {
 
     const fetchOrders = () => {
         const token = localStorage.getItem('token');
-        fetch('/api/payments/all', {
-
+        fetch('/api/payments/user', {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
         })
             .then(response => {
                 if (!response.ok) {
@@ -21,6 +24,7 @@ const OrderPage = () => {
                 return response.json();
             })
             .then(data => {
+                console.log('Orders data:', data); // Log data received from API
                 setOrders(data);
             })
             .catch(error => {
@@ -59,9 +63,7 @@ const OrderPage = () => {
                 return address ? `${address.street}, ${address.city}, ${address.state}` : '';
             }
         },
-
     ];
-
 
     return (
         <div style={{ maxWidth: '800px', margin: 'auto', padding: '20px' }}>

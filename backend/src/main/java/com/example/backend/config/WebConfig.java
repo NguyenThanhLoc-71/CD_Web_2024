@@ -16,7 +16,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/assets/images/**")
-                .addResourceLocations("file:///C:/Users/DELL/Desktop/CD_Web_2024/frontend/src/assets/images/");
+                .addResourceLocations("file:///C://Users/NGUYENTHANHLOC/Desktop/CD_Web_2024/frontend/src/assets/images/");
+
     }
 
 }

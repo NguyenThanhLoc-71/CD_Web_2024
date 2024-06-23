@@ -1,5 +1,7 @@
 package com.example.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -19,6 +21,7 @@ public class Payment {
     @JoinColumn(name = "user_id")
     private User user; // Assuming you have a User entity
 
+    @JsonIgnore
     @OneToMany(mappedBy = "payment", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 

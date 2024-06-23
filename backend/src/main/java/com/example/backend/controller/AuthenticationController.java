@@ -105,12 +105,8 @@ public class AuthenticationController {
         if (!userOptional.isPresent()) {
             return "User not found";
         }
-
         userService.deleteUser(id);
         return "User deleted successfully";
     }
-
-
-
 }
 

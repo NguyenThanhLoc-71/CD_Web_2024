@@ -61,7 +61,11 @@ const AdminPage = () => {
     };
     const fetchOrders = () => {
         const token = localStorage.getItem('token');
-        fetch('/api/payments/all', )
+        fetch('/api/payments/all', {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        })
             .then(response => response.json())
             .then(data => {
                 setOrders(data); // setOrders là state quản lý danh sách đơn hàng
