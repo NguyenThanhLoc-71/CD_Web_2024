@@ -62,26 +62,28 @@ const ProductDetailComponent = () => {
         }
     };
 
+    const imagePath = `/assets/images/${product.image}`;
+
     const onChange = () => { }
     return (
         <Row style={{ padding: '16px', background: '#fff', borderRadius: '4px' }}>
             <Col span={10} style={{ borderRight: '1px solid #e5e5e5', paddingRight: '8px' }}>
-                <Image src={product.image} alt="product.name" preview={false} />
+                <Image src={imagePath} alt="product.name" preview={false} />
                 <Row style={{ padding: '10px', justifyContent: 'space-between' }}>
                     <WrapperStyleColImage span={6}>
-                        <WrapperStyleImageSmall src={product.image} alt="product.name" preview={false} />
+                        <WrapperStyleImageSmall src={imagePath} alt="product.name" preview={false} />
                     </WrapperStyleColImage>
 
                     <WrapperStyleColImage span={6}>
-                        <WrapperStyleImageSmall src={product.image} alt="product.name" preview={false} />
+                        <WrapperStyleImageSmall src={imagePath} alt="product.name" preview={false} />
                     </WrapperStyleColImage>
 
                     <WrapperStyleColImage span={6}>
-                        <WrapperStyleImageSmall src={product.image} alt="product.name" preview={false} />
+                        <WrapperStyleImageSmall src={imagePath} alt="product.name" preview={false} />
                     </WrapperStyleColImage>
 
                     <WrapperStyleColImage span={6}>
-                        <WrapperStyleImageSmall src={product.image} alt="product.name" preview={false} />
+                        <WrapperStyleImageSmall src={imagePath} alt="product.name" preview={false} />
                     </WrapperStyleColImage>
                 </Row>
             </Col>
