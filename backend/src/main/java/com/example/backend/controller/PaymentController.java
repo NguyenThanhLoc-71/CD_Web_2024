@@ -48,8 +48,9 @@ public class PaymentController {
         }
     }
     @GetMapping("/all")
-    public ResponseEntity<List<Payment>> getAllPayments() {
+    public ResponseEntity<List<Payment>> getAllPayments(@RequestHeader("Authorization") String token) {
         try {
+            String jwt = token.substring(7);
             List<Payment> payments = paymentService.getAllPayments();
             return ResponseEntity.ok(payments);
         } catch (Exception e) {
