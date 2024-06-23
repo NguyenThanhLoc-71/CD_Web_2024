@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -88,7 +89,8 @@ public class UserServiceImpl implements UserService {
                         user.getUserName(),
                         user.getPhoneNumber(),
                         user.getEnabled(),
-                        user.getUserRoles().stream().map(ur -> ur.getRole().getName()).collect(Collectors.toSet())
+                        user.getUserRoles().stream().map(ur -> ur.getRole().getName()).collect(Collectors.toSet()),
+                        user.getAddress()
                 ))
                 .collect(Collectors.toList());
     }
@@ -103,12 +105,25 @@ public class UserServiceImpl implements UserService {
                 .map(UserRole::getRole)
                 .collect(Collectors.toSet());
     }
+
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
     @Override
     public UserProfileDTO getUserProfile(Long userId) {
         User user = userRepository.findById(userId).orElse(null);
         if (user == null) {
             throw new IllegalArgumentException("User not found with id: " + userId);
         }
-        return new UserProfileDTO(user.getId(), user.getUserName(), user.getPhoneNumber());
+        return new UserProfileDTO(user.getId(), user.getUserName(), user.getPhoneNumber(),user.getAddress());
     }
 }

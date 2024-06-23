@@ -5,11 +5,20 @@ public class UserProfileDTO {
     private String username;
     private String phoneNumber;
     // Các thông tin khác cần thiết có thể thêm vào đây
-
-    public UserProfileDTO(Long id, String username, String phoneNumber) {
+    private String address;
+    public UserProfileDTO(Long id, String username, String phoneNumber,String address) {
         this.id = id;
         this.username = username;
         this.phoneNumber = phoneNumber;
+        this.address = address;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     // Getters and Setters

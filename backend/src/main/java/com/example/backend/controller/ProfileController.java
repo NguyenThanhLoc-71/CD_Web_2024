@@ -24,4 +24,5 @@ public class ProfileController {
         Long userId = userService.findByUserName(username).getId();
         return userService.getUserProfile(userId);
     }
+
 }

@@ -1,6 +1,7 @@
 package com.example.backend.service.Impl;
 
 import com.example.backend.dto.UserDTO;
+import com.example.backend.dto.UserProfileDTO;
 import com.example.backend.entity.Role;
 import com.example.backend.entity.User;
 
@@ -25,4 +26,6 @@ public interface UserService {
     User saveUser(User user);
 
     void deleteUser(Long id);
+
+    UserProfileDTO getUserProfile(Long userId);
 }
