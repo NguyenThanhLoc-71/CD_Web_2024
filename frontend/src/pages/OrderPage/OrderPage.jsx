@@ -71,15 +71,18 @@ const OrderPage = () => {
     navigate("/checkout");
   };
 
+  const imagePath = '/assets/images/';
+
   const columns = [
     {
+      
       title: "Sản phẩm",
       dataIndex: "product",
       key: "product",
       render: (text, record) => (
         <Row>
           <Col span={6}>
-            <Image src={record.product.image} alt={record.product.name} width={50} />
+            <Image src={imagePath+record.product.image} alt={record.product.name} width={50} />
           </Col>
           <Col span={18}>
             <span>{record.product.name}</span>
