@@ -57,4 +57,16 @@ public class PaymentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @GetMapping("/user")
+    public ResponseEntity<List<Payment>> getAllPaymentsByUser(@RequestHeader("Authorization") String token) {
+        try {
+            String jwt = token.substring(7);
+            Long userId = jwtUtil.extractUserId(jwt);
+            List<Payment> payments = paymentService.getAllPaymentsByUserId(userId);
+            return ResponseEntity.ok(payments);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }

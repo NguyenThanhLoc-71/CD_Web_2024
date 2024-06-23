@@ -40,4 +40,9 @@ public class PaymentService {
         return paymentRepository.findAll();
     }
 
+    public List<Payment> getAllPaymentsByUserId(Long userId) {
+        // Example implementation assuming you have a PaymentRepository
+        return paymentRepository.findByUserId(userId);
+    }
+
 }

@@ -4,13 +4,15 @@ import { Table, Button, Space } from 'antd';
 const OrderPage = () => {
     const [orders, setOrders] = useState([]);
 
+
+
     useEffect(() => {
         fetchOrders();
     }, []);
 
     const fetchOrders = () => {
         const token = localStorage.getItem('token');
-        fetch('/api/payments/all', {
+        fetch('/api/payments/user', {
             headers: {
                 'Authorization': `Bearer ${token}`,
             },
