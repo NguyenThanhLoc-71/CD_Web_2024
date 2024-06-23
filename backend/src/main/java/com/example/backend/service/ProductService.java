@@ -14,7 +14,6 @@ import java.util.Optional;
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
-
     @Autowired
     private CategoryRepository categoryRepository;
 
@@ -38,7 +37,9 @@ public class ProductService {
         // Thực hiện truy vấn CSDL để lấy danh sách sản phẩm theo giá
         return productRepository.findByCategoryIdAndPriceBetween(categoryId, minPrice, maxPrice);
     }
-
+    public List<Product> searchProducts(String keyword) {
+        return productRepository.findByNameContainingIgnoreCase(keyword);
+    }
     public Product saveProduct(ProductDTO productDTO) {
         Product product = new Product();
         product.setName(productDTO.getName());
@@ -53,5 +54,4 @@ public class ProductService {
 
         return productRepository.save(product);
     }
-
 }

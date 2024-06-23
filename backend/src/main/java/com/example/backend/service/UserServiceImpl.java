@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.UserDTO;
+import com.example.backend.dto.UserProfileDTO;
 import com.example.backend.entity.Role;
 import com.example.backend.entity.User;
 import com.example.backend.entity.UserRole;
@@ -115,5 +116,14 @@ public class UserServiceImpl implements UserService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public UserProfileDTO getUserProfile(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found with id: " + userId);
+        }
+        return new UserProfileDTO(user.getId(), user.getUserName(), user.getPhoneNumber(),user.getAddress());
     }
 }
