@@ -8,6 +8,7 @@ import java.util.List;
 
  public class PaymentRequest {
 
+     private long userId;
      private double amount;
      private String method;
      private List<OrderItem> orderItems;
@@ -43,6 +44,14 @@ import java.util.List;
 
      public void setAddress(Address address) {
          this.address = address;
+     }
+
+     public long getUserId() {
+         return userId;
+     }
+
+     public void setUserId(long userId) {
+         this.userId = userId;
      }
 
      // Getters and setters

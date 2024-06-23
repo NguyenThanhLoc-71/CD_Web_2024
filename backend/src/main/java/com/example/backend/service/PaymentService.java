@@ -3,7 +3,9 @@ package com.example.backend.service;
 import com.example.backend.entity.Address;
 import com.example.backend.entity.OrderItem;
 import com.example.backend.entity.Payment;
+import com.example.backend.entity.User;
 import com.example.backend.repository.PaymentRepository;
+import com.example.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +17,19 @@ public class PaymentService {
     @Autowired
     private PaymentRepository paymentRepository;
 
-    public Payment processPayment(double amount, String method, List<OrderItem> orderItems, Address address, String username) {
+    @Autowired
+    private UserRepository userRepository;
+
+    public Payment processPayment(long userId, double amount, String method, List<OrderItem> orderItems, Address address) {
         // Logic to process payment and save to database
+        User user = userRepository.findById(userId).orElseThrow();
         Payment payment = new Payment();
         payment.setAmount(amount);
         payment.setMethod(method);
         payment.setAddress(address);
         // Assuming you may want to link order items to payment, adjust as necessary
         payment.setOrderItems(orderItems);
+        payment.setUser(user);
 
         // Save payment to repository or perform further business logic
         return paymentRepository.save(payment);
