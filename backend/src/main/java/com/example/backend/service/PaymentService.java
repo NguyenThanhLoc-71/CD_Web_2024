@@ -7,7 +7,9 @@ import com.example.backend.entity.User;
 import com.example.backend.repository.PaymentRepository;
 import com.example.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
@@ -34,4 +36,8 @@ public class PaymentService {
         // Save payment to repository or perform further business logic
         return paymentRepository.save(payment);
     }
+    public List<Payment> getAllPayments() {
+        return paymentRepository.findAll();
+    }
+
 }

@@ -15,6 +15,7 @@ const AdminPage = () => {
     const [selectedMenuItem, setSelectedMenuItem] = useState('products');
     const [editingUser, setEditingUser] = useState(null);
     const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+    const [orders, setOrders] = useState([]);
 
     const handleEditClick = user => {
         setEditingUser(user);
@@ -58,6 +59,17 @@ const AdminPage = () => {
     const handleEditCancel = () => {
         setIsEditModalVisible(false);
     };
+    const fetchOrders = () => {
+        const token = localStorage.getItem('token');
+        fetch('/api/payments/all', )
+            .then(response => response.json())
+            .then(data => {
+                setOrders(data); // setOrders là state quản lý danh sách đơn hàng
+            })
+            .catch(error => {
+                console.error('Error fetching orders:', error);
+            });
+    };
 
     useEffect(() => {
         fetch("/api/products")
@@ -65,6 +77,7 @@ const AdminPage = () => {
             .then((data) => setProducts(data))
             .catch((error) => console.error("Error fetching products:", error));
         fetchUsers();
+        fetchOrders();
     }, []);
 
     const fetchUsers = () => {
@@ -212,6 +225,48 @@ const AdminPage = () => {
             ),
         },
     ];
+    const orderColumns = [
+        {
+            title: 'Order ID',
+            dataIndex: 'id',
+            key: 'id',
+        },
+        {
+            title: 'User',
+            dataIndex: 'user',
+            key: 'user',
+            render: (user) => `${user.userName} (${user.email})`,
+        },
+        {
+            title: 'Amount',
+            dataIndex: 'amount',
+            key: 'amount',
+        },
+        {
+            title: 'Method',
+            dataIndex: 'method',
+            key: 'method',
+        },
+        {
+            title: 'Address',
+            dataIndex: 'address',
+            key: 'address',
+            render: (text, record) => {
+                const address = record.address;
+                return address ? `${address.street}, ${address.city}, ${address.state}` : '';
+            }
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            render: (text, record) => (
+                <Space size="middle">
+                    <Button type="primary" icon={<EditOutlined />} />
+                    <Button type="danger" icon={<DeleteOutlined />} />
+                </Space>
+            ),
+        },
+    ];
 
     const renderContent = () => {
         if (selectedMenuItem === 'users') {
@@ -229,10 +284,18 @@ const AdminPage = () => {
                     <Table dataSource={products} columns={productColumns} pagination={{ pageSize: 5 }} />
                 </div>
             );
+        } else if (selectedMenuItem === 'orders') {
+            return (
+                <div className="order-management">
+                    <Button type="primary" style={{ marginBottom: '16px' }}>Export Excel</Button>
+                    <Table dataSource={orders} columns={orderColumns} pagination={{ pageSize: 5 }} />
+                </div>
+            );
         } else {
-            return <div>Đơn hàng sẽ được thêm sau</div>;
+            return <div>Content will be added later</div>;
         }
     };
+
 
     return (
         <Layout style={{ minHeight: '100vh' }}>

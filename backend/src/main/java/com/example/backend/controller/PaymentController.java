@@ -47,4 +47,13 @@ public class PaymentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create payment.");
         }
     }
+    @GetMapping("/all")
+    public ResponseEntity<List<Payment>> getAllPayments() {
+        try {
+            List<Payment> payments = paymentService.getAllPayments();
+            return ResponseEntity.ok(payments);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }

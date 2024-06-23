@@ -45,7 +45,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .antMatchers("/", "/login", "/register", "/home", "/api/products/**","/api/categories/**","/assets/images/**","/api/payments/create","/update/**","/delete/**","/api/profile")
+                                .antMatchers("/", "/login", "/register", "/home", "/api/products/**","/api/categories/**","/assets/images/**","/api/payments/**","/update/**","/delete/**","/api/profile")
                                 .permitAll()
                                 .antMatchers("/admin/**").hasRole("ADMIN")
                                 .anyRequest()
